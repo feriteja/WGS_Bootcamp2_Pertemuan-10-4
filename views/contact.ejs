@@ -1,0 +1,36 @@
+<h1>Contact List</h1>
+<a href="/contact/add" class="btn btn-primary">Add Contact</a>
+
+<% if (contacts.length>0) { %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% contacts.forEach((element,idx) => { %>
+    <tr>
+      <th scope="row"><%= idx+1 %></th>
+      <td><%= element.name %></td>
+      <td><%= element.email %></td>
+      <td>
+        <a
+          href="/contact/<%= element.name %> "
+          class="btn btn-primary"
+          role="button"
+          >Detail</a
+        >
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<% } else { %>
+<p>not found</p>
+<% }%>
