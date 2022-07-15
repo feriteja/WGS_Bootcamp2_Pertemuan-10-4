@@ -1,0 +1,52 @@
+<h1>Update contact <%= userID %></h1>
+
+<% if (locals.message) { %>
+
+<div class="alert alert-danger" role="alert"><%= message %></div>
+<% } %>
+
+<form method="post" action="/contact/update/<%= userID %>">
+  <div class="col-md-4">
+    <label for="validationDefaultUsername" class="form-label">User Name</label>
+    <div class="input-group">
+      <input
+        name="name"
+        type="text"
+        class="form-control"
+        id="validationDefaultUsername"
+        aria-describedby="inputGroupPrepend2"
+        value="<%= contact.name %>"
+        required
+      />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefaultEmail" class="form-label">Email</label>
+    <div class="input-group">
+      <input
+        name="email"
+        type="email"
+        class="form-control"
+        id="validationDefaultEmail"
+        aria-describedby="inputGroupPrepend2"
+        value="<%= contact.email %>"
+        required
+      />
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefaultMobile" class="form-label">Mobile</label>
+    <div class="input-group">
+      <input
+        name="mobile"
+        type="number"
+        class="form-control"
+        id="validationDefaultMobile"
+        aria-describedby="inputGroupPrepend2"
+        value="<%= contact.mobile %>"
+      />
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

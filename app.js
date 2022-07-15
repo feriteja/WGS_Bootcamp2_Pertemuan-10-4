@@ -9,8 +9,9 @@ const {
   addContact,
   getContactDetail,
   deleteContact,
+  updateContact,
 } = require("./function/contactHandler");
-const { sendDelete } = require("./function/requestHandler");
+
 const app = express();
 const port = 3000;
 
@@ -22,15 +23,16 @@ app.use(expressLayouts);
 
 // app.use(express.static("public"));
 app.use("/public", express.static("public"));
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 // app.use(morgan("dev"));
 
-app.use((req, res, next) => {
-  console.log("Time:", Date.now());
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("Time:", Date.now());
+//   next();
+// });
 
+//! Home page
 app.get("/", (req, res) => {
   const contacts = getContact();
 
@@ -57,9 +59,18 @@ app.get("/contact", (req, res) => {
   });
 });
 
-//! ADD USER
+//! ADD USER FUNC
 app.post("/contact", contactValidator, (req, res) => {
+  const message = req.errorMessage;
+
+  if (message) {
+    return res.render("contactAdd", {
+      message: message,
+      params: req.body,
+    });
+  }
   addContact(req.body);
+
   const contacts = getContact();
   res.render("contact", {
     name: "Feri Teja Kusuma",
@@ -71,6 +82,33 @@ app.post("/contact", contactValidator, (req, res) => {
 //! TO ADD USER PAGE
 app.get("/contact/add", (req, res) => {
   res.render("contactAdd");
+});
+
+//! UPDATE USER PAGE
+app.get("/contact/update/:userID", (req, res) => {
+  const userID = req.params.userID;
+  const contacts = getContact();
+
+  const contact = contacts.find((contact) => contact.name === userID);
+  res.render("contactUpdate", { userID: userID, contact: contact });
+});
+
+//! UPDATE USER FUNC
+app.post("/contact/update/:userID", contactValidator, (req, res) => {
+  const userID = req.params.userID;
+  const newContact = req.body;
+  const message = req.errorMessage;
+
+  if (message && userID !== newContact.name) {
+    return res.render("contactUpdate", {
+      message: message,
+      userID: userID,
+      contact: req.body,
+    });
+  }
+
+  updateContact(userID, newContact);
+  res.redirect("/contact");
 });
 
 //! GET USER DETAIL
@@ -97,18 +135,7 @@ app.post("/contact/:userID", (req, res) => {
 
   const contacts = getContact();
 
-  res.render("contact", {
-    name: "Feri Teja Kusuma",
-    title: "WEBSERVER - EJS",
-    contacts,
-  });
-
-  res.redirect("contact", {
-    name: "Feri Teja Kusuma",
-    title: "WEBSERVER - EJS",
-
-    contacts,
-  });
+  res.redirect("/contact");
 });
 
 // app.get("/product/:id", (req, res) => {

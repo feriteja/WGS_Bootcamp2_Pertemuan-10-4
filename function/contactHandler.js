@@ -17,47 +17,31 @@ const checkContactFile = () => {
   }
 };
 
-const contactValidator = (req, res, next) => {
-  const { name, email, mobile } = req.body;
-
-  const file = fs.readFileSync("data/Contact.json", "utf8");
-  const contacts = JSON.parse(file);
-  const isNameDuplicate = contacts.some((cons) => cons.name === name);
-  const isEmailValid = validator.isEmail(email);
-  const isNumber = validator.isMobilePhone(mobile, "id-ID");
-  if (isNameDuplicate) {
-    res.render("contactAdd", {
-      message: "Name is Duplicated, Please enter something else",
-      params: req.body,
-    });
-
-    return false;
-  }
-  if (!isEmailValid) {
-    res.render("contactAdd", {
-      message: "Email is not valid",
-      params: req.body,
-    });
-
-    return false;
-  }
-  if (!isNumber) {
-    res.render("contactAdd", {
-      message: "Number is not valid",
-      params: req.body,
-    });
-
-    return false;
-  }
-  next();
-};
-
 const getContact = () => {
   checkContactFile();
   const file = fs.readFileSync("./data/contact.json", "utf8");
   const contacts = JSON.parse(file);
 
   return contacts;
+};
+
+const contactValidator = (req, res, next) => {
+  const { name, email, mobile } = req.body;
+
+  const contacts = getContact();
+  const isNameDuplicate = contacts.some((cons) => cons.name === name);
+  const isEmailValid = validator.isEmail(email);
+  const isNumber = validator.isMobilePhone(mobile, "id-ID");
+  if (isNameDuplicate) {
+    req.errorMessage = "Name is Duplicated, Please enter something else";
+  }
+  if (!isEmailValid) {
+    req.errorMessage = "Email is not valid";
+  }
+  if (!isNumber && mobile) {
+    req.errorMessage = "Number is not valid";
+  }
+  next();
 };
 
 const getContactDetail = (userID) => {
@@ -85,13 +69,29 @@ const deleteContact = (userID) => {
   if (!isContactExist) {
     return console.log("user doesn't exist");
   }
-  console.log("halo");
 
   const newContacts = contacts.filter((cont) => cont.name !== userID);
-  console.log("deleted");
 
   fs.writeFileSync("data/contact.json", JSON.stringify(newContacts));
-  console.log("saved");
+};
+
+const updateContact = (userID, contactInput) => {
+  const contacts = getContact();
+  const userDetail = getContactDetail(userID);
+
+  const filteredContacts = contacts.filter(
+    (contact) => contact.name !== userID
+  );
+
+  const contact = {
+    name: contactInput.name || userDetail.name,
+    email: contactInput.email || userDetail.email,
+    mobile: contactInput.mobile || userDetail.mobile,
+  };
+
+  filteredContacts.push(contact);
+
+  fs.writeFileSync("data/contact.json", JSON.stringify(filteredContacts));
 };
 
 module.exports = {
@@ -100,4 +100,5 @@ module.exports = {
   contactValidator,
   deleteContact,
   getContactDetail,
+  updateContact,
 };
