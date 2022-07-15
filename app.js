@@ -3,7 +3,14 @@ var morgan = require("morgan");
 const path = require("path");
 
 var expressLayouts = require("express-ejs-layouts");
-const { getContact } = require("./function/contactHandler");
+const {
+  getContact,
+  contactValidator,
+  addContact,
+  getContactDetail,
+  deleteContact,
+} = require("./function/contactHandler");
+const { sendDelete } = require("./function/requestHandler");
 const app = express();
 const port = 3000;
 
@@ -25,7 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const contacts = getContact() || [];
+  const contacts = getContact();
 
   res.render("index", {
     name: "Feri Teja Kusuma",
@@ -39,8 +46,19 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
-  const contacts = getContact() || [];
+  const contacts = getContact();
 
+  res.render("contact", {
+    name: "Feri Teja Kusuma",
+    title: "WEBSERVER - EJS",
+    checkfunction: sendDelete,
+    contacts,
+  });
+});
+
+app.post("/contact", contactValidator, (req, res) => {
+  addContact(req.body);
+  const contacts = getContact();
   res.render("contact", {
     name: "Feri Teja Kusuma",
     title: "WEBSERVER - EJS",
@@ -48,22 +66,13 @@ app.get("/contact", (req, res) => {
   });
 });
 
-app.post("/contact", (req, res) => {
-  console.log(req.body);
-  // res.render("contact");
-  res.end();
-});
-
 app.get("/contact/add", (req, res) => {
   res.render("contactAdd");
 });
 
 app.get("/contact/:userID", (req, res) => {
-  const contacts = getContact() || [];
   const userID = req.params.userID;
-
-  const user = contacts.find((contact) => contact.name === userID);
-  console.log(user);
+  const user = getContactDetail(userID);
 
   if (!user) {
     res.status(404).render("errorPage", { message: "user not found" });
@@ -73,6 +82,20 @@ app.get("/contact/:userID", (req, res) => {
     name: "Feri Teja Kusuma",
     title: "WEBSERVER - EJS",
     user,
+  });
+});
+
+app.post("/contact/:userID", (req, res) => {
+  const contact = req.params.userID;
+  deleteContact(contact);
+  console.log("delete methode");
+
+  const contacts = getContact();
+
+  res.render("contact", {
+    name: "Feri Teja Kusuma",
+    title: "WEBSERVER - EJS",
+    contacts,
   });
 });
 

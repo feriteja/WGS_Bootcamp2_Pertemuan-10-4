@@ -4,6 +4,11 @@
 
     <p class="card-text"><%= user.email %></p>
     <p class="card-text"><%= user.mobile %></p>
-    <a href="/contact" class="card-link">back to contact</a>
+    <div class="d-flex justify-content-end align-items-center">
+      <a href="/contact" class="card-link">back</a>
+      <form action="/contact/<%= user.name %>" method="post">
+        <input type="submit" value="delete" class="btn btn-danger" />
+      </form>
+    </div>
   </div>
 </div>

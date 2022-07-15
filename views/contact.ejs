@@ -1,7 +1,7 @@
 <h1>Contact List</h1>
 <a href="/contact/add" class="btn btn-primary">Add Contact</a>
 
-<% if (contacts.length>0) { %>
+<% let params %> <% if (contacts.length>0) { %>
 
 <table class="table">
   <thead>
@@ -18,13 +18,63 @@
       <th scope="row"><%= idx+1 %></th>
       <td><%= element.name %></td>
       <td><%= element.email %></td>
-      <td>
+      <td class="d-flex">
         <a
-          href="/contact/<%= element.name %> "
+          href="/contact/<%= element.name %>"
           class="btn btn-primary"
           role="button"
           >Detail</a
         >
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          Delete
+        </button>
+
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  <%= element.name %>
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                are you sure want to delete <%= element.name %>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+
+                <form action="/contact/<%= element.name %>" method="post">
+                  <input type="submit" value="delete" class="btn btn-danger" />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </td>
     </tr>
     <% }) %>
@@ -34,3 +84,5 @@
 <% } else { %>
 <p>not found</p>
 <% }%>
+
+<!-- Button trigger modal -->
