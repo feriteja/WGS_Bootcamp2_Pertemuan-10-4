@@ -45,17 +45,19 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
+//! GET ALL USER
 app.get("/contact", (req, res) => {
   const contacts = getContact();
 
   res.render("contact", {
     name: "Feri Teja Kusuma",
     title: "WEBSERVER - EJS",
-    checkfunction: sendDelete,
+
     contacts,
   });
 });
 
+//! ADD USER
 app.post("/contact", contactValidator, (req, res) => {
   addContact(req.body);
   const contacts = getContact();
@@ -66,10 +68,12 @@ app.post("/contact", contactValidator, (req, res) => {
   });
 });
 
+//! TO ADD USER PAGE
 app.get("/contact/add", (req, res) => {
   res.render("contactAdd");
 });
 
+//! GET USER DETAIL
 app.get("/contact/:userID", (req, res) => {
   const userID = req.params.userID;
   const user = getContactDetail(userID);
@@ -85,6 +89,7 @@ app.get("/contact/:userID", (req, res) => {
   });
 });
 
+//! DELETE  USER
 app.post("/contact/:userID", (req, res) => {
   const contact = req.params.userID;
   deleteContact(contact);
@@ -95,6 +100,13 @@ app.post("/contact/:userID", (req, res) => {
   res.render("contact", {
     name: "Feri Teja Kusuma",
     title: "WEBSERVER - EJS",
+    contacts,
+  });
+
+  res.redirect("contact", {
+    name: "Feri Teja Kusuma",
+    title: "WEBSERVER - EJS",
+
     contacts,
   });
 });
