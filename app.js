@@ -15,6 +15,7 @@ app.use(expressLayouts);
 
 // app.use(express.static("public"));
 app.use("/public", express.static("public"));
+app.use(express.urlencoded());
 
 // app.use(morgan("dev"));
 
@@ -45,6 +46,12 @@ app.get("/contact", (req, res) => {
     title: "WEBSERVER - EJS",
     contacts,
   });
+});
+
+app.post("/contact", (req, res) => {
+  console.log(req.body);
+  // res.render("contact");
+  res.end();
 });
 
 app.get("/contact/add", (req, res) => {
