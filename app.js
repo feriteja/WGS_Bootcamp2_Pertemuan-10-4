@@ -14,7 +14,6 @@ app.set("layout extractStyles", true);
 
 app.use(expressLayouts);
 
-// app.use(express.static("public"));
 app.use("/public", express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,23 +40,6 @@ app.get("/about", (req, res) => {
 });
 
 app.use("/contact", contact);
-
-// app.get("/product/:id", (req, res) => {
-//   console.log(req.query.category);
-//   res.send(
-//     `product id: ${req.params.id} <br /> category id: ${req.query.category} `
-//   );
-// });
-
-// app.get("/product/:id", (req, res) => {
-//   res.send(`product id: ${req.params.id}`);
-// });
-
-// app.get("/product/:id/category/:idcat", (req, res) => {
-//   res.send(
-//     `product id: ${req.params.id} <br /> category id: ${req.params.idcat} `
-//   );
-// });
 
 app.use("/", (req, res) => {
   res.status(404).render("errorPage", { message: "page is not found" });
