@@ -1,5 +1,7 @@
 <h1>Contact List</h1>
-<a href="/contact/add" class="btn btn-primary">Add Contact</a>
+<a href="/contact/add" class="btn btn-primary my-3"
+  ><i class="bi bi-person-plus"></i> Add Contact</a
+>
 
 <% let params %> <% if (contacts.length>0) { %> <% if (message && message !==
 "user has been deleted" ) { %>
@@ -8,13 +10,13 @@
 <div class="alert alert-danger mt-2" role="alert"><%= message %></div>
 <% } %>
 
-<table class="table">
+<table class="table shadow-sm">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
-      <th scope="col">Action</th>
+      <th scope="col" class="text-center">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -23,7 +25,7 @@
       <th scope="row"><%= idx+1 %></th>
       <td><%= element.name %></td>
       <td><%= element.email %></td>
-      <td class="d-flex">
+      <td class="d-flex justify-content-center">
         <a
           href="/contact/<%= element.name %>"
           class="btn btn-primary m-2"
@@ -34,7 +36,9 @@
           href="/contact/update/<%= element.name %>"
           class="btn btn-warning m-2"
           role="button"
-          >Edit</a
+        >
+          <i class="bi bi-pencil-square"></i>
+          Edit</a
         >
 
         <button
@@ -43,6 +47,7 @@
           data-bs-toggle="modal"
           data-bs-target="#exampleModal<%=element.name%>"
         >
+          <i class="bi bi-trash"></i>
           Delete
         </button>
 

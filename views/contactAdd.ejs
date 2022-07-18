@@ -1,3 +1,9 @@
+<div>
+  <a href="/contact" class="btn btn-secondary my-1" role="button">
+    <i class="bi bi-backspace"></i> Back</a
+  >
+</div>
+
 <h1>Add contact</h1>
 
 <% if (locals.message ) { %>
@@ -10,7 +16,7 @@
 <% } %> <% let value ; %> <% if (locals.params) { value = params } %>
 
 <form method="post" action="/contact">
-  <div class="col-md-4">
+  <div class="col-md-4 mt-3">
     <label for="validationDefaultUsername" class="form-label">User Name</label>
     <div class="input-group">
       <input
@@ -24,7 +30,7 @@
       />
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4 mt-3">
     <label for="validationDefaultEmail" class="form-label">Email</label>
     <div class="input-group">
       <input
@@ -38,7 +44,7 @@
       />
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4 mt-3">
     <label for="validationDefaultMobile" class="form-label">Mobile</label>
     <div class="input-group">
       <input
@@ -52,5 +58,5 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary mt-2">Submit</button>
 </form>
