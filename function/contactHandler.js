@@ -2,6 +2,29 @@ const fs = require("fs");
 
 const validator = require("validator");
 
+//! MidleWare
+const contactValidator = (req, res, next) => {
+  const { name, email, mobile } = req.body;
+  const newContact = req.body;
+  const userID = req.params.userID;
+
+  const contacts = getContact();
+  const isNameDuplicate = contacts.some((cons) => cons.name.trim() === name);
+  const isEmailValid = validator.isEmail(email);
+  const isNumber = validator.isMobilePhone(mobile, "id-ID");
+  req.errorMessage = [];
+  if (isNameDuplicate && userID !== newContact.name) {
+    req.errorMessage.push("Name is Duplicated, Please enter something else");
+  }
+  if (!isEmailValid) {
+    req.errorMessage.push("Email is not valid");
+  }
+  if (!isNumber && mobile) {
+    req.errorMessage.push("Number is not valid");
+  }
+  next();
+};
+
 const checkContactFile = () => {
   const dirPath = "./data";
   const isFolderExist = fs.existsSync(dirPath);
@@ -23,26 +46,6 @@ const getContact = () => {
   const contacts = JSON.parse(file);
 
   return contacts;
-};
-
-const contactValidator = (req, res, next) => {
-  const { name, email, mobile } = req.body;
-
-  const contacts = getContact();
-  const isNameDuplicate = contacts.some((cons) => cons.name.trim() === name);
-  const isEmailValid = validator.isEmail(email);
-  const isNumber = validator.isMobilePhone(mobile, "id-ID");
-  req.errorMessage = [];
-  if (isNameDuplicate) {
-    req.errorMessage.push("Name is Duplicated, Please enter something else");
-  }
-  if (!isEmailValid) {
-    req.errorMessage.push("Email is not valid");
-  }
-  if (!isNumber && mobile) {
-    req.errorMessage.push("Number is not valid");
-  }
-  next();
 };
 
 const getContactDetail = (userID) => {
