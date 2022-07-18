@@ -53,6 +53,7 @@ app.get("/contact", (req, res) => {
   let message = "";
   if (req.query.added) message = "user has been added";
   if (req.query.updated) message = "user has been updated";
+  if (req.query.deleted) message = "user has been deleted";
 
   res.render("contact", {
     name: "Feri Teja Kusuma",
@@ -135,12 +136,12 @@ app.get("/contact/:userID", (req, res) => {
 //! DELETE  USER
 app.post("/contact/:userID", (req, res) => {
   const contact = req.params.userID;
-  deleteContact(contact);
-  console.log("delete methode");
 
-  const contacts = getContact();
+  const isDeleted = deleteContact(contact);
 
-  res.redirect("/contact");
+  if (!isDeleted) res.status(404).render("errorPage");
+
+  res.redirect("/contact?deleted=success");
 });
 
 // app.get("/product/:id", (req, res) => {

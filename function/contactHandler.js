@@ -68,7 +68,8 @@ const deleteContact = (userID) => {
   const isContactExist = contacts.find((cont) => cont.name.trim() === userID);
 
   if (!isContactExist) {
-    return console.log("user doesn't exist");
+    console.log("user doesn't exist");
+    return false;
   }
 
   const newContacts = contacts.filter((cont) => cont.name !== userID);

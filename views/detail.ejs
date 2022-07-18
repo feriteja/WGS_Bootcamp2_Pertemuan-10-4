@@ -1,13 +1,36 @@
-<div class="card" style="width: 18rem">
-  <div class="card-body">
-    <h3 class="card-title"><%= user.name %></h3>
-
-    <p class="card-text"><%= user.email %></p>
-    <p class="card-text"><%= user.mobile %></p>
-    <div class="d-flex justify-content-end align-items-center">
-      <a href="/contact" class="card-link me-2">back</a>
+<div class="card mb-3" style="max-width: 540px">
+  <div class="row g-0 p-2">
+    <div class="position-relative col-4 center">
+      <h1 class="position-absolute top-50 start-50 translate-middle">
+        <%= user.name.charAt(0) + user.name.charAt(user.name.length -1) %>
+      </h1>
+    </div>
+    <div class="col-6">
+      <div class="card-body">
+        <h5 class="card-title"><%= user.name %></h5>
+        <p class="card-text"><%= user.mobile %></p>
+        <p class="card-text">
+          <bold class="text-muted"><%= user.email %></bold>
+        </p>
+      </div>
+    </div>
+    <div class="col-2 my-auto">
+      <a href="/contact" class="btn btn-secondary w-100 my-1" role="button"
+        >back</a
+      >
+      <a
+        href="/contact/update/<%= user.name %>"
+        class="btn btn-warning w-100 my-1"
+        role="button"
+        >Edit</a
+      >
       <form action="/contact/<%= user.name %>" method="post">
-        <input type="submit" value="delete" class="btn btn-danger" />
+        <input
+          type="submit"
+          value="delete"
+          class="btn btn-danger w-100 my-1"
+          role="button"
+        />
       </form>
     </div>
   </div>

@@ -1,8 +1,11 @@
 <h1>Contact List</h1>
 <a href="/contact/add" class="btn btn-primary">Add Contact</a>
 
-<% let params %> <% if (contacts.length>0) { %> <% if (message) { %>
+<% let params %> <% if (contacts.length>0) { %> <% if (message && message !==
+"user has been deleted" ) { %>
 <div class="alert alert-success mt-2" role="alert"><%= message %></div>
+<% } else if(message) {%>
+<div class="alert alert-danger mt-2" role="alert"><%= message %></div>
 <% } %>
 
 <table class="table">
