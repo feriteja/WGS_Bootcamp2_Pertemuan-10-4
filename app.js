@@ -50,11 +50,14 @@ app.get("/about", (req, res) => {
 //! GET ALL USER
 app.get("/contact", (req, res) => {
   const contacts = getContact();
+  let message = "";
+  if (req.query.added) message = "user has been added";
+  if (req.query.updated) message = "user has been updated";
 
   res.render("contact", {
     name: "Feri Teja Kusuma",
     title: "WEBSERVER - EJS",
-
+    message,
     contacts,
   });
 });
@@ -63,7 +66,7 @@ app.get("/contact", (req, res) => {
 app.post("/contact", contactValidator, (req, res) => {
   const message = req.errorMessage;
 
-  if (message) {
+  if (message.length > 0) {
     return res.render("contactAdd", {
       message: message,
       params: req.body,
@@ -72,11 +75,8 @@ app.post("/contact", contactValidator, (req, res) => {
   addContact(req.body);
 
   const contacts = getContact();
-  res.render("contact", {
-    name: "Feri Teja Kusuma",
-    title: "WEBSERVER - EJS",
-    contacts,
-  });
+
+  res.redirect("/contact?added=success");
 });
 
 //! TO ADD USER PAGE
@@ -97,9 +97,10 @@ app.get("/contact/update/:userID", (req, res) => {
 app.post("/contact/update/:userID", contactValidator, (req, res) => {
   const userID = req.params.userID;
   const newContact = req.body;
+  const existContact = getContactDetail(userID);
   const message = req.errorMessage;
 
-  if (message && userID !== newContact.name) {
+  if (message.length > 0 && userID !== newContact.name) {
     return res.render("contactUpdate", {
       message: message,
       userID: userID,
@@ -107,8 +108,12 @@ app.post("/contact/update/:userID", contactValidator, (req, res) => {
     });
   }
 
+  if (JSON.stringify(existContact) === JSON.stringify(newContact)) {
+    res.redirect("/contact");
+  }
+
   updateContact(userID, newContact);
-  res.redirect("/contact");
+  res.redirect("/contact?updated=success");
 });
 
 //! GET USER DETAIL

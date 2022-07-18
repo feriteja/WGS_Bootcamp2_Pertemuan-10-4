@@ -2,7 +2,12 @@
 
 <% if (locals.message) { %>
 
-<div class="alert alert-danger" role="alert"><%= message %></div>
+<div class="alert alert-danger" role="alert">
+  <% message.forEach(element => { %>
+  <h6 class="border-bottom border-secondary my-2"><%= element %></h6>
+
+  <% }) %>
+</div>
 <% } %>
 
 <form method="post" action="/contact/update/<%= userID %>">

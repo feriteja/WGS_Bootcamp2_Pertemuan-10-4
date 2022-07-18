@@ -29,17 +29,18 @@ const contactValidator = (req, res, next) => {
   const { name, email, mobile } = req.body;
 
   const contacts = getContact();
-  const isNameDuplicate = contacts.some((cons) => cons.name === name);
+  const isNameDuplicate = contacts.some((cons) => cons.name.trim() === name);
   const isEmailValid = validator.isEmail(email);
   const isNumber = validator.isMobilePhone(mobile, "id-ID");
+  req.errorMessage = [];
   if (isNameDuplicate) {
-    req.errorMessage = "Name is Duplicated, Please enter something else";
+    req.errorMessage.push("Name is Duplicated, Please enter something else");
   }
   if (!isEmailValid) {
-    req.errorMessage = "Email is not valid";
+    req.errorMessage.push("Email is not valid");
   }
   if (!isNumber && mobile) {
-    req.errorMessage = "Number is not valid";
+    req.errorMessage.push("Number is not valid");
   }
   next();
 };
@@ -47,7 +48,7 @@ const contactValidator = (req, res, next) => {
 const getContactDetail = (userID) => {
   const contacts = getContact() || [];
 
-  const user = contacts.find((contact) => contact.name === userID);
+  const user = contacts.find((contact) => contact.name.trim() === userID);
   return user;
 };
 
@@ -64,7 +65,7 @@ const deleteContact = (userID) => {
   checkContactFile();
   const contacts = getContact();
 
-  const isContactExist = contacts.find((cont) => cont.name === userID);
+  const isContactExist = contacts.find((cont) => cont.name.trim() === userID);
 
   if (!isContactExist) {
     return console.log("user doesn't exist");
@@ -80,7 +81,7 @@ const updateContact = (userID, contactInput) => {
   const userDetail = getContactDetail(userID);
 
   const filteredContacts = contacts.filter(
-    (contact) => contact.name !== userID
+    (contact) => contact.name.trim() !== userID
   );
 
   const contact = {

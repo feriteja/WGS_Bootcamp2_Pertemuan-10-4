@@ -1,7 +1,9 @@
 <h1>Contact List</h1>
 <a href="/contact/add" class="btn btn-primary">Add Contact</a>
 
-<% let params %> <% if (contacts.length>0) { %>
+<% let params %> <% if (contacts.length>0) { %> <% if (message) { %>
+<div class="alert alert-success mt-2" role="alert"><%= message %></div>
+<% } %>
 
 <table class="table">
   <thead>
@@ -36,7 +38,7 @@
           type="button"
           class="btn btn-danger m-2"
           data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
+          data-bs-target="#exampleModal<%=element.name%>"
         >
           Delete
         </button>
@@ -44,7 +46,7 @@
         <!-- Modal -->
         <div
           class="modal fade"
-          id="exampleModal"
+          id="exampleModal<%=element.name%>"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
