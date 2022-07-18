@@ -7,11 +7,11 @@
     </div>
     <div class="col-6">
       <div class="card-body">
-        <h5 class="card-title"><%= user.name %></h5>
-        <p class="card-text"><%= user.mobile %></p>
-        <p class="card-text">
-          <bold class="text-muted"><%= user.email %></bold>
-        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item fw-semibold"><%= user.name %></li>
+          <li class="list-group-item"><%= user.mobile %></li>
+          <li class="list-group-item"><%= user.email %></li>
+        </ul>
       </div>
     </div>
     <div class="col-2 my-auto">
